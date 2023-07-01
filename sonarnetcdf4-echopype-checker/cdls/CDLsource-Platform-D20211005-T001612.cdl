@@ -1,0 +1,310 @@
+netcdf echopype-test-D20211005-T001612 {
+
+group: Platform {
+  dimensions:
+    channel = 3 ;
+    time1 = 1 ;
+    time2 = 5 ;
+  variables:
+    // NEED TO VERIFY: DATA TYPES, ATTRIBUTES PRESENT, ATTRIBUTE VALUES
+    // NOTE: The original source file didn't have lat, lon and time1 values
+    // COORDINATE VARIABLES ---------------------------------
+    string channel(channel) ;
+      channel:long_name = "Vendor channel ID" ;
+      channel:obligation = "NA" ;
+      channel:echopype_mods = "added" ;
+    uint64 time1(time1) ;
+      time1:_FillValue = NaN ;
+      time1:axis = "T" ;
+      time1:long_name = "Timestamps for NMEA datagrams" ;
+      time1:standard_name = "time" ;
+      time1:comment = "Time coordinate corresponding to NMEA position data." ;
+      time1:units = "seconds since 1900-01-01T00:00:00+00:00" ;
+      time1:calendar = "gregorian" ;
+      time1:obligation = "NA" ;
+      time1:echopype_mods = "changed-units" ;
+    uint64 time2(time2) ;
+      time2:_FillValue = NaN ;
+      time2:axis = "T" ;
+      time2:long_name = "Timestamps for platform motion and orientation data" ;
+      time2:standard_name = "time" ;
+      time2:comment = "Time coordinate corresponding to platform motion and orientation data." ;
+      time2:units = "seconds since 1900-01-01T00:00:00+00:00" ;
+      time2:calendar = "gregorian" ;
+      time2:obligation = "NA" ;
+      time2:echopype_mods = "changed-units" ;
+    
+    // DATA VARIABLES ---------------------------------------
+
+    // CONVENTION VARIABLES MISSING FROM ECHOPYPE
+    // distance, heading, speed_ground, speed_relative
+    float distance(time2) ;
+      distance:_FillValue = NaN ;
+      distance:long_name = "Distance travelled by the platform" ;
+      distance:units = "m" ;
+      distance:valid_min = 0.0 ;
+      distance:obligation = "O" ;
+    float heading(time2) ;
+      heading:_FillValue = NaN ;
+      heading:long_name = "Platform heading (true)" ;
+      heading:standard_name = "platform_orientation" ;
+      heading:units = "degrees_north" ;
+      heading:valid_range = -90.0, 90.0 ;
+      heading:obligation = "MA" ;
+    float speed_ground(time1) ;
+      speed_ground:_FillValue = NaN ;
+      speed_ground:long_name = "Platform speed over ground" ;
+      speed_ground:standard_name = "platform_speed_wrt_ground" ;
+      speed_ground:units = "m/s" ;
+      speed_ground:valid_min = 0.0 ;
+      speed_ground:obligation = "MA" ;
+    float speed_relative(time2) ;
+      speed_relative:_FillValue = NaN ;
+      speed_relative:long_name = "Platform speed relative to water" ;
+      speed_relative:standard_name = "platform_speed_wrt_seawater" ;
+      speed_relative:units = "m/s" ;
+      speed_relative:valid_min = 0.0 ;
+      speed_relative:obligation = "O" ;
+    // ------------------------
+    double frequency_nominal(channel) ;
+      frequency_nominal:_FillValue = NaN ;
+      frequency_nominal:units = "Hz" ;
+      frequency_nominal:long_name = "Transducer frequency" ;
+      frequency_nominal:valid_min = 0. ;
+      frequency_nominal:standard_name = "sound_frequency" ;
+      frequency_nominal:obligation = "NA" ;
+      frequency_nominal:echopype_mods = "added" ;
+    double latitude(time1) ;
+      latitude:_FillValue = NaN ;
+      latitude:long_name = "Platform latitude" ;
+      latitude:standard_name = "latitude" ;
+      latitude:units = "degrees_north" ;
+      latitude:valid_range = -90.0, 90.0 ;
+      latitude:obligation = "MA" ;
+    double longitude(time1) ;
+      longitude:_FillValue = NaN ;
+      longitude:long_name = "Platform longitude" ;
+      longitude:standard_name = "longitude" ;
+      longitude:units = "degrees_east" ;
+      longitude:valid_range = -180.0, 180.0 ;
+      longitude:obligation = "MA" ;
+    float MRU_offset_x ;
+      MRU_offset_x:_FillValue = NaN ;
+      MRU_offset_x:long_name = "Distance along the x-axis from the platform coordinate system origin to the motion reference unit sensor origin" ;
+      MRU_offset_x:units = "m" ;
+      MRU_offset_x:obligation = "R" ;
+    float MRU_offset_y ;
+      MRU_offset_y:_FillValue = NaN ;
+      MRU_offset_y:long_name = "Distance along the y-axis from the platform coordinate system origin to the motion reference unit sensor origin" ;
+      MRU_offset_y:units = "m" ;
+      MRU_offset_y:obligation = "R" ;
+    float MRU_offset_z ;
+      MRU_offset_z:_FillValue = NaN ;
+      MRU_offset_z:long_name = "Distance along the z-axis from the platform coordinate system origin to the motion reference unit sensor origin" ;
+      MRU_offset_z:units = "m" ;
+      MRU_offset_z:obligation = "R" ;
+    float MRU_rotation_x ;
+      MRU_rotation_x:_FillValue = NaN ;
+      MRU_rotation_x:long_name = "Extrinsic rotation about the x-axis from the platform to MRU coordinate systems" ;
+      MRU_rotation_x:units = "arc_degree" ;
+      MRU_rotation_x:valid_range = -180.0, 180.0 ;
+      MRU_rotation_x:obligation = "R" ;
+    float MRU_rotation_y ;
+      MRU_rotation_y:_FillValue = NaN ;
+      MRU_rotation_y:long_name = "Extrinsic rotation about the y-axis from the platform to MRU coordinate systems" ;
+      MRU_rotation_y:units = "arc_degree" ;
+      MRU_rotation_y:valid_range = -180.0, 180.0 ;
+      MRU_rotation_y:obligation = "R" ;
+    float MRU_rotation_z ;
+      MRU_rotation_z:_FillValue = NaN ;
+      MRU_rotation_z:long_name = "Extrinsic rotation about the z-axis from the platform to MRU coordinate systems" ;
+      MRU_rotation_z:units = "arc_degree" ;
+      MRU_rotation_z:valid_range = -180.0, 180.0 ;
+      MRU_rotation_z:obligation = "R" ;
+    double pitch(time2) ;
+      pitch:_FillValue = NaN ;
+      pitch:long_name = "Platform pitch" ;
+      pitch:standard_name = "platform_pitch_angle" ;
+      pitch:units = "arc_degree" ;
+      pitch:valid_range = -90.0, 90.0 ;
+      pitch:obligation = "MA" ;
+    float position_offset_x ;
+      position_offset_x:_FillValue = NaN ;
+      position_offset_x:long_name = "Distance along the x-axis from the platform coordinate system origin to the latitude/longitude sensor origin" ;
+      position_offset_x:units = "m" ;
+      position_offset_x:obligation = "R" ;
+    float position_offset_y ;
+      position_offset_y:_FillValue = NaN ;
+      position_offset_y:long_name = "Distance along the y-axis from the platform coordinate system origin to the latitude/longitude sensor origin" ;
+      position_offset_y:units = "m" ;
+      position_offset_y:obligation = "R" ;
+    float position_offset_z ;
+      position_offset_z:_FillValue = NaN ;
+      position_offset_z:long_name = "Distance along the z-axis from the platform coordinate system origin to the latitude/longitude sensor origin" ;
+      position_offset_z:units = "m" ;
+      position_offset_z:obligation = "R" ;
+    float roll(time2) ;
+      roll:_FillValue = NaN ;
+      roll:long_name = "Platform roll" ;
+      roll:standard_name = "platform_roll_angle" ;
+      roll:units = "arc_degree" ;
+      roll:valid_range = -180.0, 180.0 ;
+      roll:obligation = "MA" ;
+    string sentence_type(time1) ;
+      sentence_type:_FillValue = NaN ;
+      sentence_type:long_name = "NMEA sentence type" ;  // verify this
+      sentence_type:obligation = "NA" ;
+      sentence_type:echopype_mods = "added" ;
+    float transducer_offset_x(channel) ;
+      transducer_offset_x:_FillValue = NaN ;
+      transducer_offset_x:long_name = "x-axis distance from the platform coordinate system origin to the sonar transducer" ;
+      transducer_offset_x:units = "m" ;
+      transducer_offset_x:obligation = "R" ;
+    float transducer_offset_y(channel) ;
+      transducer_offset_y:_FillValue = NaN ;
+      transducer_offset_y:long_name = "y-axis distance from the platform coordinate system origin to the sonar transducer" ;
+      transducer_offset_y:units = "m" ;
+      transducer_offset_y:obligation = "R" ;
+    float transducer_offset_z(channel) ;
+      transducer_offset_z:_FillValue = NaN ;
+      transducer_offset_z:long_name = "z-axis distance from the platform coordinate system origin to the sonar transducer" ;
+      transducer_offset_z:units = "m" ;
+      transducer_offset_z:obligation = "R" ;
+    float vertical_offset(time2) ;
+      vertical_offset:_FillValue = NaN ;
+      vertical_offset:long_name = "Platform vertical offset from nominal water level" ;
+      vertical_offset:units = "m" ;
+      vertical_offset:obligation = "R" ;
+    float water_level ;
+      water_level:_FillValue = NaN ;
+      water_level:long_name = "Distance from the platform coordinate system origin to the nominal water level along the z-axis" ;
+      water_level:units = "m" ;
+      water_level:obligation = "R" ;
+    // INTRODUCED VARIABLES SPECIFIC TO A SUBSET OF INSTRUMENT TYPES
+    double drop_keel_offset ;
+      drop_keel_offset:_FillValue = NaN ;
+      drop_keel_offset:comment = "For EK80 only" ;
+      drop_keel_offset:obligation = "NA" ;
+      drop_keel_offset:echopype_mods = "added" ;
+    int64 drop_keel_offset_is_manual ;
+      drop_keel_offset_is_manual:comment = "For EK80 only" ;
+      drop_keel_offset_is_manual:obligation = "NA" ;
+      drop_keel_offset_is_manual:echopype_mods = "added" ;
+    int64 water_level_draft_is_manual ;
+      water_level_draft_is_manual:comment = "For EK80 only" ;
+      water_level_draft_is_manual:obligation = "NA" ;
+      water_level_draft_is_manual:echopype_mods = "added" ;
+    float tilt_x(time2) ;
+      tilt_x:long_name = "Tilt X" ;
+      tilt_x:units = "arc_degree" ;
+      tilt_x:comment = "For AZFP only" ;
+      tilt_x:obligation = "NA" ;
+      tilt_x:echopype_mods = "added" ;
+    float tilt_y(time2) ;
+      tilt_y:long_name = "Tilt Y" ;
+      tilt_y:units = "arc_degree" ;
+      tilt_y:comment = "For AZFP only" ;
+      tilt_y:obligation = "NA" ;
+      tilt_y:echopype_mods = "added" ;
+
+  // group attributes:
+      :platform_code_ICES = "" ;
+      :platform_name = "" ;
+      :platform_type = "" ;
+  data:
+
+   frequency_nominal = 120000, 200000, 70000 ;
+
+   pitch = 0, 0, 0, 0, 0 ;
+
+   roll = 0, 0, 0, 0, 0 ;
+
+   vertical_offset = 0, 0, 0, 0, 0 ;
+
+   latitude = 50.0 ;
+
+   longitude = -130.1 ;
+
+   sentence_type = _ ;
+
+   distance = _, _, _, _, _ ;
+
+   heading = _, _, _, _, _ ;
+
+   speed_ground = _, ;
+
+   speed_relative = _, _, _, _, _ ;
+
+   transducer_offset_x = 0, 0, 0 ;
+
+   transducer_offset_y = 0, 0, 0 ;
+
+   transducer_offset_z = 0, 0, 0 ;
+
+   water_level = 0 ;
+
+   MRU_offset_x = _ ;
+
+   MRU_offset_y = _ ;
+
+   MRU_offset_z = _ ;
+
+   MRU_rotation_x = _ ;
+
+   MRU_rotation_y = _ ;
+
+   MRU_rotation_z = _ ;
+
+   position_offset_x = _ ;
+
+   position_offset_y = _ ;
+
+   position_offset_z = _ ;
+
+   drop_keel_offset = _ ;
+
+   drop_keel_offset_is_manual = 0 ;
+
+   water_level_draft_is_manual = 0 ;
+
+   tilt_x = _, _, _, _, _ ;
+
+   tilt_y = _, _, _, _, _ ;
+
+   channel = "WBT 150013-15 ES120-7C_ES", "WBT 545612-15 ES200-7C_ES", 
+      "WBT 549762-15 ES70-7C_ES" ;
+
+   time1 = 3842381772 ;
+
+   time2 = 3842381772, 3842381773, 3842381774, 3842381775, 
+      3842381776.964 ;
+
+
+  group: NMEA {
+    dimensions:
+      // called "time" in convention
+      time1 = 1 ;
+    variables:
+      string NMEA_datagram(time1) ;
+        NMEA_datagram:long_name = "NMEA datagram" ;
+      uint64 time1(time1) ;
+        time1:_FillValue = NaN ;
+        time1:axis = "T" ;
+        time1:long_name = "Timestamps for NMEA datagrams" ;
+        time1:standard_name = "time" ;
+        time1:comment = "Time coordinate corresponding to NMEA sensor data." ;
+        time1:units = "seconds since 1900-01-01T00:00:00+00:00" ;
+        time1:calendar = "gregorian" ;
+        time1:echopype_mods = "changed-attrs,changed-var" ;
+
+    // group attributes:
+        :description = "All NMEA sensor datagrams" ;
+    data:
+
+     NMEA_datagram = "$SDVLW,51.576,N,51.576,N" ;
+
+     time1 = 3842381772 ;
+    } // group NMEA
+  } // group Platform
+
+}
