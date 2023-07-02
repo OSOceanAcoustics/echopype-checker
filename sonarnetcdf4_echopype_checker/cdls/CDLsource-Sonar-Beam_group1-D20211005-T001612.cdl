@@ -1,0 +1,505 @@
+netcdf echopype-test-D20211005-T001612 {
+
+// global attributes:
+    :conventions = "CF-1.7, SONAR-netCDF4-1.0, ACDD-1.3" ;
+    :keywords = "EK80" ;
+    :sonar_convention_authority = "ICES" ;
+    :sonar_convention_name = "SONAR-netCDF4" ;
+    :sonar_convention_version = "1.0" ;
+    :summary = "" ;
+    :title = "" ;
+    :date_created = "2021-10-05T00:16:12Z" ;
+    :survey_name = "" ;
+
+group: Sonar {
+  dimensions:
+    channel = 3 ;
+    beam_group = 1 ;
+  variables:
+    // COORDINATE VARIABLES ---------------------------------
+    string beam_group(beam_group) ;
+      beam_group:long_name = "Beam group name" ;
+      beam_group:obligation = "NA" ;
+      beam_group:echopype_mods = "added" ;
+    string channel(channel) ;
+      channel:long_name = "Vendor channel ID" ;
+      channel:obligation = "NA" ;
+      channel:echopype_mods = "added" ;
+    
+    // DATA VARIABLES ---------------------------------------
+    string beam_group_descr(beam_group) ;
+      beam_group_descr:long_name = "Beam group description" ;
+      beam_group_descr:obligation = "NA" ;
+      beam_group_descr:echopype_mods = "added" ;
+    double frequency_nominal(channel) ;
+      frequency_nominal:_FillValue = NaN ;
+      frequency_nominal:units = "Hz" ;
+      frequency_nominal:long_name = "Transducer frequency" ;
+      frequency_nominal:valid_min = 0. ;
+      frequency_nominal:standard_name = "sound_frequency" ;
+      frequency_nominal:obligation = "NA" ;
+      frequency_nominal:echopype_mods = "added" ;
+    string transceiver_serial_number(channel) ;
+      transceiver_serial_number:long_name = "Transceiver serial number" ;
+      transceiver_serial_number:obligation = "NA" ;
+      transceiver_serial_number:echopype_mods = "added" ;
+    string transducer_name(channel) ;
+      transducer_name:long_name = "Transducer name" ;
+      transducer_name:obligation = "NA" ;
+      transducer_name:echopype_mods = "added" ;
+    string transducer_serial_number(channel) ;
+      transducer_serial_number:long_name = "Transducer serial number" ;
+      transducer_serial_number:obligation = "NA" ;
+      transducer_serial_number:echopype_mods = "added" ;
+
+  // group attributes:
+      :sonar_manufacturer = "Simrad" ;
+      :sonar_model = "EK80" ;
+      :sonar_serial_number = "" ;
+      :sonar_software_name = "EK80" ;
+      :sonar_software_version = "2.0.1.0" ;
+      :sonar_type = "echosounder" ;
+  data:
+
+   frequency_nominal = 120000, 200000, 70000 ;
+
+   transceiver_serial_number = "150013", "545612", "549762" ;
+
+   transducer_name = "ES120-7C", "ES200-7C", "ES70-7C" ;
+
+   transducer_serial_number = "1808", "213", "116" ;
+
+   beam_group_descr = 
+      "contains complex backscatter data and other beam or channel-specific data." ; 
+
+   channel = "WBT 150013-15 ES120-7C_ES", "WBT 545612-15 ES200-7C_ES", 
+      "WBT 549762-15 ES70-7C_ES" ;
+
+   beam_group = "Beam_group1" ;
+
+  group: Beam_group1 {
+    dimensions:
+      channel = 1 ;
+      ping_time = 5 ;
+      beam = 4 ;
+      range_sample = 2 ;
+    variables:
+      // COORDINATE VARIABLES ---------------------------------
+      string beam(beam) ;
+        beam:long_name = "Beam name" ;
+        beam:obligation = "M" ;
+      string channel(channel) ;
+        channel:long_name = "Vendor channel ID" ;
+        channel:obligation = "NA" ;
+        channel:echopype_mods = "added" ;
+      double ping_time(ping_time) ;
+        ping_time:_FillValue = NaN ;
+        ping_time:long_name = "Timestamp of each ping" ;
+        ping_time:standard_name = "time" ;
+        ping_time:axis = "T" ;
+        ping_time:units = "seconds since 1900-01-01T00:00:00+00:00" ;
+        ping_time:calendar = "gregorian" ;
+        ping_time:obligation = "M" ;
+        ping_time:echopype_mods = "changed-type-units" ;
+      int64 range_sample(range_sample) ;
+        range_sample:long_name = "Along-range sample number, base 0" ;
+        range_sample:obligation = "NA" ;
+        range_sample:echopype_mods = "added" ;
+
+      // DATA VARIABLES ---------------------------------------
+
+      // CONVENTION VARIABLES MISSING FROM EK80 IN ECHOPYPE
+      // --- Added channel dimension and the use of enum types
+      // Note: I've ommitted the beam_receive/transmit_minor/major variables.
+      // Also ommitted MA variables described as necessary for type 1 and 2, 
+      // (except for gain_correction and transmit_power):
+      // receiver_sensitivity, time_varied_gain, transducer_gain, transmit_duration_equivalent, transmit_source_level
+      byte beam_stabilisation(channel, ping_time) ;
+        beam_stabilisation:long_name =  "Beam stabilisation applied (or not)" ;
+        beam_stabilisation:obligation = "M" ;
+      float gain_correction(channel, ping_time, beam) ;
+        // This variable is found in EK60 and AZFP
+        gain_correction:long_name = "Gain correction" ;
+        gain_correction:units = "dB" ;
+        gain_correction:obligation = "MA" ;
+      short non_quantitative_processing(channel, ping_time) ;
+        non_quantitative_processing:flag_meanings = "strings" ;
+        non_quantitative_processing:flag_values = 1,2 ;
+        non_quantitative_processing:long_name = "Presence or not of non-quantitative processing applied to the backscattering data (sonar specific)" ;
+        non_quantitative_processing:obligation = "M" ;
+      float sample_time_offset(channel, ping_time) ;
+        sample_time_offset:long_name = "Time offset that is subtracted from the timestamp of each sample" ;
+        sample_time_offset:units = "s" ;
+        sample_time_offset:obligation = "M" ;
+      float transmit_bandwidth(channel, ping_time) ;
+        transmit_bandwidth:long_name = "Nominal bandwidth of transmitted pulse" ;
+        transmit_bandwidth:units = "Hz" ;
+        transmit_bandwidth:valid_min = 0.0 ;
+        transmit_bandwidth:obligation = "O" ;
+      float transmit_frequency_start(channel, ping_time, beam) ;
+        transmit_frequency_start:long_name = "Start frequency in transmitted pulse" ;
+        transmit_frequency_start:standard_name = "sound_frequency" ;
+        transmit_frequency_start:units = "Hz" ;
+        transmit_frequency_start:valid_min = 0.0 ;
+        transmit_frequency_start:obligation = "M" ;
+      float transmit_frequency_stop(channel, ping_time, beam) ;
+        transmit_frequency_stop:long_name = "Stop frequency in transmitted pulse" ;
+        transmit_frequency_stop:standard_name = "sound_frequency" ;
+        transmit_frequency_stop:units = "Hz" ;
+        transmit_frequency_stop:valid_min = 0.0 ;
+        transmit_frequency_stop:obligation = "M" ;
+      string transmit_type(channel, ping_time) ;
+        transmit_type:long_name = "Type of transmitted pulse" ;
+        transmit_type:obligation = "M" ;
+      // ------------------------
+      // ADDED FROM Beam_group2
+      // Do they duplicate existing variables in Beam_group1?
+      double angle_athwartship(channel, ping_time, range_sample, beam) ;
+        angle_athwartship:_FillValue = NaN ;
+        angle_athwartship:long_name = "electrical athwartship angle" ;
+        angle_athwartship:comment = "Introduced in echopype for Simrad echosounders. The athwartship angle corresponds to the major angle in SONAR-netCDF4 vers 2. " ;
+        angle_athwartship:obligation = "NA" ;
+        angle_athwartship:echopype_mods = "added" ;
+      double angle_alongship(channel, ping_time, range_sample, beam) ;
+        angle_alongship:_FillValue = NaN ;
+        angle_alongship:long_name = "electrical alongship angle" ;
+        angle_alongship:comment = "Introduced in echopype for Simrad echosounders. The alongship angle corresponds to the minor angle in SONAR-netCDF4 vers 2. " ;
+        angle_alongship:obligation = "NA" ;
+        angle_alongship:echopype_mods = "added" ;
+      // ------------------------
+      double angle_offset_alongship(channel, ping_time, beam) ;
+        angle_offset_alongship:_FillValue = NaN ;
+        angle_offset_alongship:long_name = "electrical alongship angle offset of the transducer" ;
+        angle_offset_alongship:comment = "Introduced in echopype for Simrad echosounders. The alongship angle corresponds to the minor angle in SONAR-netCDF4 vers 2. " ;
+        angle_offset_alongship:obligation = "NA" ;
+        angle_offset_alongship:echopype_mods = "added" ;
+      double angle_offset_athwartship(channel, ping_time, beam) ;
+        angle_offset_athwartship:_FillValue = NaN ;
+        angle_offset_athwartship:long_name = "electrical athwartship angle offset of the transducer" ;
+        angle_offset_athwartship:comment = "Introduced in echopype for Simrad echosounders. The athwartship angle corresponds to the major angle in SONAR-netCDF4 vers 2. " ;
+        angle_offset_athwartship:obligation = "NA" ;
+        angle_offset_athwartship:echopype_mods = "added" ;
+      double angle_sensitivity_alongship(channel, ping_time, beam) ;
+        angle_sensitivity_alongship:_FillValue = NaN ;
+        angle_sensitivity_alongship:long_name = "alongship angle sensitivity of the transducer" ;
+        angle_sensitivity_alongship:comment = "Introduced in echopype for Simrad echosounders. The alongship angle corresponds to the minor angle in SONAR-netCDF4 vers 2. " ;
+        angle_sensitivity_alongship:obligation = "NA" ;
+        angle_sensitivity_alongship:echopype_mods = "added" ;
+      double angle_sensitivity_athwartship(channel, ping_time, beam) ;
+        angle_sensitivity_athwartship:_FillValue = NaN ;
+        angle_sensitivity_athwartship:long_name = "athwartship angle sensitivity of the transducer" ;
+        angle_sensitivity_athwartship:comment = "Introduced in echopype for Simrad echosounders. The athwartship angle corresponds to the major angle in SONAR-netCDF4 vers 2. " ;
+        angle_sensitivity_athwartship:obligation = "NA" ;
+        angle_sensitivity_athwartship:echopype_mods = "added" ;
+      float backscatter_i(channel, ping_time, range_sample, beam) ;
+        backscatter_i:_FillValue = NaNf ;
+        backscatter_i:long_name = "Raw backscatter measurements (imaginary part)" ;
+        backscatter_i:units = "dB" ;
+        backscatter_i:obligation = "MA" ;
+      float backscatter_r(channel, ping_time, range_sample, beam) ;
+        backscatter_r:_FillValue = NaNf ;
+        backscatter_r:long_name = "Raw backscatter measurements (real part)" ;
+        backscatter_r:units = "dB" ;
+        backscatter_r:obligation = "M" ;
+      double beam_direction_x(channel, ping_time, beam) ;
+        beam_direction_x:_FillValue = NaN ;
+        beam_direction_x:long_name = "x-component of the vector that gives the pointing direction of the beam, in sonar beam coordinate system" ;
+        beam_direction_x:units = "1" ;
+        beam_direction_x:valid_range = -1., 1. ;
+        beam_direction_x:obligation = "M" ;
+      double beam_direction_y(channel, ping_time, beam) ;
+        beam_direction_y:_FillValue = NaN ;
+        beam_direction_y:long_name = "y-component of the vector that gives the pointing direction of the beam, in sonar beam coordinate system" ;
+        beam_direction_y:units = "1" ;
+        beam_direction_y:valid_range = -1., 1. ;
+        beam_direction_y:obligation = "M" ;
+      double beam_direction_z(channel, ping_time, beam) ;
+        beam_direction_z:_FillValue = NaN ;
+        beam_direction_z:long_name = "z-component of the vector that gives the pointing direction of the beam, in sonar beam coordinate system" ;
+        beam_direction_z:units = "1" ;
+        beam_direction_z:valid_range = -1., 1. ;
+        beam_direction_z:obligation = "M" ;
+      int64 beam_type(channel, ping_time) ;
+        beam_type:long_name = "Type of beam" ;
+        beam_type:echopype_mods = "changed-type";
+        beam_type:obligation = "M" ;
+      double beamwidth_twoway_alongship(channel, ping_time, beam) ;
+        beamwidth_twoway_alongship:_FillValue = NaN ;
+        beamwidth_twoway_alongship:long_name = "Half power two-way beam width along alongship axis of beam" ;
+        beamwidth_twoway_alongship:units = "arc_degree" ;
+        beamwidth_twoway_alongship:valid_range = 0., 360. ;
+        beamwidth_twoway_alongship:comment = "Introduced in echopype for Simrad echosounders to avoid potential confusion with convention definitions. The alongship angle corresponds to the minor angle in SONAR-netCDF4 vers 2. The convention defines one-way transmit or receive beamwidth (beamwidth_receive_minor and beamwidth_transmit_minor), but Simrad echosounders record two-way beamwidth in the data." ;
+        beamwidth_twoway_alongship:obligation = "NA" ;
+        beamwidth_twoway_alongship:echopype_mods = "added-replacement" ;
+      double beamwidth_twoway_athwartship(channel, ping_time, beam) ;
+        beamwidth_twoway_athwartship:_FillValue = NaN ;
+        beamwidth_twoway_athwartship:long_name = "Half power two-way beam width along athwartship axis of beam" ;
+        beamwidth_twoway_athwartship:units = "arc_degree" ;
+        beamwidth_twoway_athwartship:valid_range = 0., 360. ;
+        beamwidth_twoway_athwartship:comment = "Introduced in echopype for Simrad echosounders to avoid potential confusion with convention definitions. The athwartship angle corresponds to the major angle in SONAR-netCDF4 vers 2. The convention defines one-way transmit or receive beamwidth (beamwidth_receive_major and beamwidth_transmit_major), but Simrad echosounders record two-way beamwidth in the data." ;
+        beamwidth_twoway_athwartship:obligation = "NA" ;
+        beamwidth_twoway_athwartship:echopype_mods = "added-replacement" ;
+      double equivalent_beam_angle(channel, ping_time, beam) ;
+        equivalent_beam_angle:_FillValue = NaN ;
+        equivalent_beam_angle:long_name = "Equivalent beam angle" ;
+        equivalent_beam_angle:units = "sr" ;
+        equivalent_beam_angle:valid_range = 0., 12.6 ;
+        equivalent_beam_angle:obligation = "M" ;
+      int64 frequency_end(channel, ping_time, beam) ;
+        // is this a direct replacement of transmit_frequency_end?
+        frequency_end:long_name = "Ending frequency of the transducer" ;
+        frequency_end:units = "Hz" ;
+        frequency_end:valid_min = 0. ;
+        frequency_end:standard_name = "sound_frequency" ;
+        frequency_end:obligation = "NA" ;
+        frequency_end:echopype_mods = "added-replacement" ;
+      double frequency_nominal(channel) ;
+        frequency_nominal:_FillValue = NaN ;
+        frequency_nominal:units = "Hz" ;
+        frequency_nominal:long_name = "Transducer frequency" ;
+        frequency_nominal:valid_min = 0. ;
+        frequency_nominal:standard_name = "sound_frequency" ;
+        frequency_nominal:obligation = "NA" ;
+        frequency_nominal:echopype_mods = "added" ;
+      int64 frequency_start(channel, ping_time, beam) ;
+        // is this a direct replacement of transmit_frequency_start?
+        frequency_start:long_name = "Starting frequency of the transducer" ;
+        frequency_start:units = "Hz" ;
+        frequency_start:valid_min = 0. ;
+        frequency_start:standard_name = "sound_frequency" ;
+        frequency_start:obligation = "NA" ;
+        frequency_start:echopype_mods = "added-replacement" ;
+      double sample_interval(channel, ping_time) ;
+        sample_interval:_FillValue = NaN ;
+        sample_interval:long_name = "Interval between recorded raw data samples" ;
+        sample_interval:units = "s" ;
+        sample_interval:obligation = "M" ;
+        sample_interval:valid_min = 0. ;
+      double slope(channel, ping_time) ;
+        slope:_FillValue = NaN ;
+        slope:obligation = "NA" ;
+        slope:echopype_mods = "added" ;
+      string transceiver_software_version(channel) ;
+        transceiver_software_version:obligation = "NA" ;
+        transceiver_software_version:echopype_mods = "added" ;
+      double transmit_power(channel, ping_time) ;
+        transmit_power:_FillValue = NaN ;
+        transmit_power:long_name = "Nominal transmit power" ;
+        transmit_power:units = "W" ;
+        transmit_power:valid_min = 0. ;
+        transmit_power:obligation = "MA" ;
+      float transmit_duration_nominal(channel, ping_time) ;
+        transmit_duration_nominal:_FillValue = NaNf ;
+        // long_name is supposed to be "Nominal duration of transmitted pulse"
+        transmit_duration_nominal:long_name = "Nominal bandwidth of transmitted pulse" ;
+        transmit_duration_nominal:units = "s" ;
+        transmit_duration_nominal:valid_min = 0. ;
+        transmit_duration_nominal:obligation = "M" ;
+
+    // group attributes:
+        :beam_mode = "vertical" ;
+        :conversion_equation_t = "type_3" ;
+    data:
+
+     // --------------------------------
+
+      beam_stabilisation =  0, 0, 0, 0, 0 ;
+
+      non_quantitative_processing =  0, 0, 0, 0, 0 ;
+
+      sample_time_offset =  0., 0., 0., 0, 0. ;
+
+      transmit_bandwidth =  1., 1., 1., 1, 1. ;
+
+      transmit_type =  "CW", "CW", "CW", "CW", "CW" ;
+
+      gain_correction =
+  1., 1., 1., 1.,
+  1., 1., 1., 1.,
+  1., 1., 1., 1.,
+  1., 1., 1., 1.,
+  1., 1., 1., 1. ;
+      
+      transmit_frequency_start =
+  1., 1., 1., 1.,
+  1., 1., 1., 1.,
+  1., 1., 1., 1.,
+  1., 1., 1., 1.,
+  1., 1., 1., 1. ;
+      
+      transmit_frequency_stop = 
+  1., 1., 1., 1.,
+  1., 1., 1., 1.,
+  1., 1., 1., 1.,
+  1., 1., 1., 1.,
+  1., 1., 1., 1. ;
+
+     // --------------------------------
+
+     angle_athwartship =
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4. ;
+
+     angle_alongship =
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4.,
+  1., 2., 3., 4. ;
+
+     // --------------------------------
+
+     frequency_nominal = 120000 ;
+
+     beam_type = 1, 1, 1, 1, 1 ;
+
+     beamwidth_twoway_alongship =
+  6.72, 6.72, 6.72, 6.72,
+  6.72, 6.72, 6.72, 6.72,
+  6.72, 6.72, 6.72, 6.72,
+  6.72, 6.72, 6.72, 6.72,
+  6.72, 6.72, 6.72, 6.72 ;
+
+     beamwidth_twoway_athwartship =
+  6.62, 6.62, 6.62, 6.62,
+  6.62, 6.62, 6.62, 6.62,
+  6.62, 6.62, 6.62, 6.62,
+  6.62, 6.62, 6.62, 6.62,
+  6.62, 6.62, 6.62, 6.62 ;
+
+     beam_direction_x =
+  0., 0., 0., 0.,
+  0., 0., 0., 0.,
+  0., 0., 0., 0.,
+  0., 0., 0., 0.,
+  0., 0., 0., 0. ;
+
+     beam_direction_y =
+  0., 0., 0., 0.,
+  0., 0., 0., 0.,
+  0., 0., 0., 0.,
+  0., 0., 0., 0.,
+  0., 0., 0., 0. ;
+
+     beam_direction_z =
+  0., 0., 0., 0.,
+  0., 0., 0., 0.,
+  0., 0., 0., 0.,
+  0., 0., 0., 0.,
+  0., 0., 0., 0. ;
+
+     angle_offset_alongship =
+  0.03, 0.03, 0.03, 0.03,
+  0.03, 0.03, 0.03, 0.03,
+  0.03, 0.03, 0.03, 0.03,
+  0.03, 0.03, 0.03, 0.03,
+  0.03, 0.03, 0.03, 0.03 ;
+
+     angle_offset_athwartship =
+  -0.04, -0.04, -0.04, -0.04,
+  -0.04, -0.04, -0.04, -0.04,
+  -0.04, -0.04, -0.04, -0.04,
+  -0.04, -0.04, -0.04, -0.04,
+  -0.04, -0.04, -0.04, -0.04 ;
+
+     angle_sensitivity_alongship =
+  23, 23, 23, 23,
+  23, 23, 23, 23,
+  23, 23, 23, 23,
+  23, 23, 23, 23,
+  23, 23, 23, 23 ;
+
+     angle_sensitivity_athwartship =
+  23, 23, 23, 23,
+  23, 23, 23, 23,
+  23, 23, 23, 23,
+  23, 23, 23, 23,
+  23, 23, 23, 23 ;
+
+     equivalent_beam_angle =
+  -20.7, -20.7, -20.7, -20.7,
+  -20.7, -20.7, -20.7, -20.7,
+  -20.7, -20.7, -20.7, -20.7,
+  -20.7, -20.7, -20.7, -20.7,
+  -20.7, -20.7, -20.7, -20.7 ;
+
+     transceiver_software_version = "2.20" ;
+
+     channel = "WBT 150013-15 ES120-7C_ES" ;
+
+     backscatter_r =
+  3.748114e-05, 3.223628e-05, 4.797172e-05, 4.606434e-05,
+  -0.001821251, -0.001401654, -0.002360794, -0.002269238,
+  -0.004355508, -0.004630208, -0.004447064, -0.005667772,
+  9.937377e-06, -0.002696561, 0.001752623, -0.001180428,
+  0.001786956, 0.001405496, 0.0002138335, 0.0009125524,
+  -0.001535143, -0.0003694827, -0.001317735, -0.0008839236,
+  0.0008839405, -0.0002760307, 0.005576149, 0.001294855,
+  -0.004096094, -0.0004257597, -0.008436286, -0.005194717,
+  -0.004813255, -0.002467665, -0.003657839, 0.0003294374,
+  0.005087816, 0.002383663, 0.009992199, 0.008527683;
+  
+     backscatter_i =
+  -1.39895e-05, -2.619089e-05, 9.81713e-06, -8.684628e-06,
+  -0.001550432, -0.0006722168, -0.002749895, -0.002154805,
+  -0.006812171, -0.002261649, -0.01240351, -0.008802476,
+  -0.005438801, -0.00137876, -0.00895407, -0.00565234,
+  0.004050044, 0.002032642, 0.006811983, 0.005804872,
+  -0.0004639029, -0.001512256, -0.002994009, -0.002627701,
+  -0.002833841, -0.001790773, -0.004935201, -0.004935273,
+  0.005743994, 0.005377867, 0.008619457, 0.00819222,
+  0.0006874841, 0.001214742, -0.0007828317, 0.001909023,
+  0.007132462, 0.005392954, 0.008863428, 0.006247404;
+  
+
+     ping_time = 3842381772.962, 3842381773.963, 3842381774.965, 
+        3842381775.962, 3842381776.964 ;
+
+     range_sample = 0, 1 ;
+
+     beam = "1", "2", "3", "4" ;
+
+     frequency_start =
+  90000, 90000, 90000, 90000,
+  90000, 90000, 90000, 90000,
+  90000, 90000, 90000, 90000,
+  90000, 90000, 90000, 90000,
+  90000, 90000, 90000, 90000 ;
+
+     frequency_end =
+  170000, 170000, 170000, 170000,
+  170000, 170000, 170000, 170000,
+  170000, 170000, 170000, 170000,
+  170000, 170000, 170000, 170000,
+  170000, 170000, 170000, 170000 ;
+
+     sample_interval =
+  8e-06, 8e-06, 8e-06, 8e-06, 8e-06 ;
+
+     transmit_power =
+  50, 50, 50, 50, 50 ;
+
+     transmit_duration_nominal =
+  0.000512, 0.000512, 0.000512, 0.000512, 0.000512 ;
+
+     slope =
+  0.5, 0.5, 0.5, 0.5, 0.5 ;
+    } // group Beam_group1
+
+  } // group Sonar
+
+
+}

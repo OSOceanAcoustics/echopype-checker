@@ -1,0 +1,8 @@
+black
+flake8
+isort
+pre-commit
+pytest
+sphinx-automodapi
+numpydoc
+docutils<0.18
