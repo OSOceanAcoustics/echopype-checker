@@ -17,11 +17,6 @@ Go to https://uw-echospace.github.io/EchoPro/ to view Jupyter notebooks that dem
 
 ## Installation
 
-Python EchoPro is not yet available for installation as a package on [PyPI](https://pypi.org/) or [conda-forge](https://conda-forge.org/). Until then, it must be installed either from the code (mainly for continued development purposes) after "cloning" the GitHub repository using `git`, or from an EchoPro [Python wheel file](https://realpython.com/python-wheels/) available from the GitHub repository. Either way, we'll use [conda](https://docs.conda.io) to install EchoPro dependencies using the conda environment file [condaenvironment.yaml](https://github.com/uw-echospace/EchoPro/blob/master/condaenvironment.yaml) from the repository. Installation of EchoPro dependencies has been tested extensively with `conda`. 
-
-There are [different ways of installing `conda`](https://oceanhackweek.org/resources/prep/conda.html#installing-conda), but we recommend the use of [Miniconda](https://docs.conda.io/en/latest/miniconda.html). `conda` can be used without administrative privileges.
-
-
 ### Installation as a developer
 
 Follow these steps if you intend to make code contributions to EchoPro:
