@@ -231,7 +231,7 @@ group: Platform {
 
    heading = _, _, _, _, _ ;
 
-   speed_ground = _, ;
+   speed_ground = _ ;
 
    speed_relative = _, _, _, _, _ ;
 
