@@ -6,12 +6,11 @@ import pandas as pd
 import xarray as xr
 
 
-# TODO: A string comparison failure popped up involving Platform sentence_type
-#   and I haven't addressed it.
 def _dtype_compare(var1, var2, dtype_strict=True):
     """Perform numpy array data type comparisons
     
-    var1, var2: xarray Dataarrays (or could be plain numpy arrays)
+    var1: xarray Dataarray
+    var2: xarray Dataarray
     dtype_strict: If True, the comparison will be made on the specific data type returned by .dtype;
         if False, it will be a generalized comparison based on .dtype.kind 
         (eg, float rather than float64 or float32) or a string-type comparison that
@@ -22,11 +21,13 @@ def _dtype_compare(var1, var2, dtype_strict=True):
     else:
         if 'O' in (var1.dtype.kind, var2.dtype.kind):
             # Perform comparisons for string types where one is an object type potentially 
-            # containing strings. Could also use np.issubdtype(var1.dtype, str)
-            if var1.dtype.kind in {'U', 'S'}:
-                return var2[0].values.dtype.kind in {'U', 'S'}
-            elif var2.dtype.kind in {'U', 'S'}:
-                return var1[0].values.dtype.kind in {'U', 'S'}
+            # containing strings. Could also use np.issubdtype(var1.dtype, str).
+            # In the return statement, I previously used the more verbose
+            # var2[0].values.dtype.kind in ('U', 'S')
+            if var1.dtype.kind in ('U', 'S'):
+                return type(var2.values[0]) is str
+            elif var2.dtype.kind in ('U', 'S'):
+                return type(var1.values[0]) is str
             else:
                 # Will return True if both are object type and neither contains string elements
                 return var1.dtype.kind == var2.dtype.kind
@@ -71,7 +72,6 @@ class ConventionCDL:
         cdl_path = Path(moduledir) / "cdls" / cdl_filename
         # cdl_path = Path("./cdls") / cdl_filename
         
-        # Uses these defaults: mode='a'
         nc4_ds = nc4.Dataset.fromcdl(cdl_path, ncfilename=None, format="NETCDF4")
 
         # If the group parameter is not used, the Top-level (root) group is returned
