@@ -1,6 +1,7 @@
 import importlib.resources as pkg_resources
 
 import netCDF4 as nc4
+import numpy as np
 import pandas as pd
 import xarray as xr
 
@@ -264,9 +265,9 @@ class ConventionCDL:
             ]
             ed_group_attrs_keys = ed_source.attrs.keys()
             for attr in cdl_attrs_keys & ed_group_attrs_keys:
-                if attr != 'valid_range':
-                    # TODO: For now, excluding value_range b/c it entails
-                    #   comparing lists or arrays, not scalars
+                if not isinstance(cdl_source.attrs[attr], (list, tuple, np.ndarray)):
+                    # TODO: Excluding sequence-type attributes for now (eg, 'valid_range')
+                    #   b/c they entail comparing lists or arrays, not scalars
                     if ed_source.attrs[attr] != cdl_source.attrs[attr]:
                         source = "global" if global_attrs else v
                         print(f"{source}.{attr}: EchoData value: {ed_source.attrs[attr]}")
