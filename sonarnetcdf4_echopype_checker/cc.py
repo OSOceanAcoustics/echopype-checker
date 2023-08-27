@@ -1,10 +1,10 @@
-import os
-from pathlib import Path
+import importlib.resources as pkg_resources
 
 import netCDF4 as nc4
 import pandas as pd
 import xarray as xr
 
+from . import cdls
 
 def _dtype_compare(var1, var2, dtype_strict=True):
     """Perform numpy array data type comparisons
@@ -63,23 +63,15 @@ class ConventionCDL:
             # Not implemented yet
             return None, None
         
-        # TODO: Use of moduledir won't be needed once this module becomes a package
-        # May be able to replace this with importlib.resources, but will then probably
-        # have to use StringIO
-        # https://dev.to/bowmanjd/easily-load-non-python-data-files-from-a-python-package-2e8g
-        # https://stackoverflow.com/questions/58520128/how-to-use-importlib-resources-pathpackage-resource
-        moduledir = os.path.dirname(os.path.realpath(__file__))
-        cdl_path = Path(moduledir) / "cdls" / cdl_filename
-        # cdl_path = Path("./cdls") / cdl_filename
-        
+        # Create nc4 Dataset from cdl file.
+        # Then remove the unnecessary, by-product netcdf file that's created
+        with pkg_resources.path(cdls, cdl_filename) as p:
+            cdl_path = p
         nc4_ds = nc4.Dataset.fromcdl(cdl_path, ncfilename=None, format="NETCDF4")
-
+        p.with_suffix(".nc").unlink()
+        
         # If the group parameter is not used, the Top-level (root) group is returned
         cdl_ds = xr.load_dataset(xr.backends.NetCDF4DataStore(nc4_ds, group=group))
-        # nc4_ds.close() # Not needed, apparently?
-
-        # TODO: nc files are being created by fromcdl, despite the ncfilename=None.
-        #       Delete them here
         
         # Create dataframe compiling the properties attributes "obligation" and "echopype_mods"
         # for each variable
@@ -141,7 +133,8 @@ class ConventionCDL:
         self.obligation = obligation
     
     def set_echopype_mods(self, echopype_mods):
-        # TODO: implement exclude=False later 
+        # TODO: implement exclude=False later
+        #   I don't yet have the echopype_mods_all set
         if isinstance(echopype_mods, (list, tuple)):
             echopype_mods = set(echopype_mods)
         elif echopype_mods is None:
@@ -264,6 +257,7 @@ class ConventionCDL:
         
         This will be trickier b/c of values that are not defined as static
         """
+
         def _attr_value_check(cdl_source, ed_source, global_attrs):
             cdl_attrs_keys = [
                 k for k in cdl_source.attrs.keys() if k not in ('obligation', 'echopype_mods')
