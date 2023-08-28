@@ -225,15 +225,15 @@ group: Platform {
 
    longitude = -130.1 ;
 
-   sentence_type = _ ;
+   sentence_type = "X" ;
 
-   distance = _, _, _, _, _ ;
+   distance = 0, 0, 0, 0, 0 ;
 
-   heading = _, _, _, _, _ ;
+   heading = 0, 0, 0, 0, 0 ;
 
-   speed_ground = _ ;
+   speed_ground = 0 ;
 
-   speed_relative = _, _, _, _, _ ;
+   speed_relative = 0, 0, 0, 0, 0 ;
 
    transducer_offset_x = 0, 0, 0 ;
 
@@ -243,33 +243,33 @@ group: Platform {
 
    water_level = 0 ;
 
-   MRU_offset_x = _ ;
+   MRU_offset_x = 0 ;
 
-   MRU_offset_y = _ ;
+   MRU_offset_y = 0 ;
 
-   MRU_offset_z = _ ;
+   MRU_offset_z = 0 ;
 
-   MRU_rotation_x = _ ;
+   MRU_rotation_x = 0 ;
 
-   MRU_rotation_y = _ ;
+   MRU_rotation_y = 0 ;
 
-   MRU_rotation_z = _ ;
+   MRU_rotation_z = 0 ;
 
-   position_offset_x = _ ;
+   position_offset_x = 0 ;
 
-   position_offset_y = _ ;
+   position_offset_y = 0 ;
 
-   position_offset_z = _ ;
+   position_offset_z = 0 ;
 
-   drop_keel_offset = _ ;
+   drop_keel_offset = 0 ;
 
    drop_keel_offset_is_manual = 0 ;
 
    water_level_draft_is_manual = 0 ;
 
-   tilt_x = _, _, _, _, _ ;
+   tilt_x = 1, 1, 1, 1, 1 ;
 
-   tilt_y = _, _, _, _, _ ;
+   tilt_y = 1, 1, 1, 1, 1 ;
 
    channel = "WBT 150013-15 ES120-7C_ES", "WBT 545612-15 ES200-7C_ES", 
       "WBT 549762-15 ES70-7C_ES" ;

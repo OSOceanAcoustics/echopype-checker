@@ -1,10 +1,10 @@
 [project]
-name = "sonarnetcdf4-echopype-checker"
+name = "echopype-checker"
 dynamic = ["version"]
 requires-python = ">=3.9"
 
 [tool.setuptools.dynamic]
-version = {attr = "sonarnetcdf4_echopype_checker.__version__"}
+version = {attr = "echopype_checker.__version__"}
 
 [build-system]
 requires = [

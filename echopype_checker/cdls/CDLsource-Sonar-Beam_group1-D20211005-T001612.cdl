@@ -123,7 +123,7 @@ group: Sonar {
         gain_correction:units = "dB" ;
         gain_correction:obligation = "MA" ;
       short non_quantitative_processing(channel, ping_time) ;
-        non_quantitative_processing:flag_meanings = "strings" ;
+        non_quantitative_processing:flag_meanings = "strings" ; // TODO: Update with actual, expected values
         non_quantitative_processing:flag_values = 1,2 ;
         non_quantitative_processing:long_name = "Presence or not of non-quantitative processing applied to the backscattering data (sonar specific)" ;
         non_quantitative_processing:obligation = "M" ;
@@ -154,18 +154,18 @@ group: Sonar {
       // ------------------------
       // ADDED FROM Beam_group2
       // Do they duplicate existing variables in Beam_group1?
-      double angle_athwartship(channel, ping_time, range_sample, beam) ;
-        angle_athwartship:_FillValue = NaN ;
-        angle_athwartship:long_name = "electrical athwartship angle" ;
-        angle_athwartship:comment = "Introduced in echopype for Simrad echosounders. The athwartship angle corresponds to the major angle in SONAR-netCDF4 vers 2. " ;
-        angle_athwartship:obligation = "NA" ;
-        angle_athwartship:echopype_mods = "added" ;
       double angle_alongship(channel, ping_time, range_sample, beam) ;
         angle_alongship:_FillValue = NaN ;
         angle_alongship:long_name = "electrical alongship angle" ;
         angle_alongship:comment = "Introduced in echopype for Simrad echosounders. The alongship angle corresponds to the minor angle in SONAR-netCDF4 vers 2. " ;
         angle_alongship:obligation = "NA" ;
         angle_alongship:echopype_mods = "added" ;
+      double angle_athwartship(channel, ping_time, range_sample, beam) ;
+        angle_athwartship:_FillValue = NaN ;
+        angle_athwartship:long_name = "electrical athwartship angle" ;
+        angle_athwartship:comment = "Introduced in echopype for Simrad echosounders. The athwartship angle corresponds to the major angle in SONAR-netCDF4 vers 2. " ;
+        angle_athwartship:obligation = "NA" ;
+        angle_athwartship:echopype_mods = "added" ;
       // ------------------------
       double angle_offset_alongship(channel, ping_time, beam) ;
         angle_offset_alongship:_FillValue = NaN ;
